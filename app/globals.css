@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/* =========================================
+   FLAIR TECHNOLOGIES COLOR SYSTEM
+   Light: cream canvas, dark: navy depth
+   Accent: #FFC078 (Flair amber/logo color)
+   ========================================= */
+
+:root {
+  /* Backgrounds */
+  --background: oklch(0.98 0.012 80);        /* #FDF9EC warm cream */
+  --foreground: oklch(0.12 0.005 120);       /* #1B1C1B near-black */
+
+  /* Cards & surfaces */
+  --card: oklch(1 0 0);                      /* #FFFFFF pure white */
+  --card-foreground: oklch(0.12 0.005 120);
+
+  /* Popover */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0.005 120);
+
+  /* PRIMARY — Flair amber #FFC078 */
+  --primary: oklch(0.79 0.13 60);
+  --primary-foreground: oklch(0.12 0.005 120); /* dark text on amber */
+
+  /* Secondary */
+  --secondary: oklch(0.93 0 0);              /* #EDEDED */
+  --secondary-foreground: oklch(0.12 0.005 120);
+
+  /* Muted */
+  --muted: oklch(0.93 0 0);                  /* #EDEDED */
+  --muted-foreground: oklch(0.54 0.01 60);   /* #86847E warm gray */
+
+  /* Accent — deeper amber #DA9646 */
+  --accent: oklch(0.72 0.12 60);             /* #DA9646 */
+  --accent-foreground: oklch(0.12 0.005 120);
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Borders & inputs */
+  --border: oklch(0.91 0.005 80);            /* slightly warm border */
+  --input: oklch(0.91 0.005 80);
+  --ring: oklch(0.79 0.13 60);               /* primary amber ring */
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Backgrounds — deep navy system */
+  --background: oklch(0.13 0.04 245);        /* #0E1628 darkest navy */
+  --foreground: oklch(1 0 0);               /* #FFFFFF */
+
+  /* Cards */
+  --card: oklch(0.21 0.04 240);             /* #1F2937 slate */
+  --card-foreground: oklch(1 0 0);
+
+  /* Popover */
+  --popover: oklch(0.21 0.04 240);
+  --popover-foreground: oklch(1 0 0);
+
+  /* PRIMARY — Flair amber #FFC078 (unchanged) */
+  --primary: oklch(0.79 0.13 60);
+  --primary-foreground: oklch(0.12 0.005 120);
+
+  /* Secondary */
+  --secondary: oklch(0.16 0.02 240);        /* #1E1E1E */
+  --secondary-foreground: oklch(1 0 0);
+
+  /* Muted */
+  --muted: oklch(0.16 0.02 240);
+  --muted-foreground: oklch(0.54 0.01 60);  /* #86847E */
+
+  /* Accent */
+  --accent: oklch(0.79 0.13 60);
+  --accent-foreground: oklch(0.12 0.005 120);
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Borders & inputs */
+  --border: oklch(0.22 0.04 240);
+  --input: oklch(0.22 0.04 240);
+  --ring: oklch(0.79 0.13 60);
+}
+
+@theme inline {
+  --font-sans: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .scroll-container {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    overflow-anchor: auto;
+  }
+
+  /* Flair brand gradient */
+  .flair-gradient {
+    background: linear-gradient(135deg, #FFC078 0%, #DA9646 100%);
+  }
+
+  /* Subtle card shadow in light, glow in dark */
+  .card-elevated {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  }
+  .dark .card-elevated {
+    box-shadow: 0 0 0 1px rgb(255 192 120 / 0.08);
+  }
+
+  /* Focus ring using brand color */
+  .flair-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFC078]/60;
+  }
+  
+  /* Animated gradient flow for text headers */
+  .animate-gradient-flow {
+    background-size: 200% auto;
+    animation: flow 5s linear infinite;
+  }
+}
+
+@keyframes flow {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* Printing styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    overflow: visible !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  .print\:border-none {
+    border: none !important;
+  }
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
+  .print\:bg-transparent {
+    background: transparent !important;
+  }
+  .print\:p-0 {
+    padding: 0 !important;
+  }
+}
