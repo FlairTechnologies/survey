@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Check, Download, Home, Printer, Copy, CheckCircle2 } from 'lucide-react'
+import { Home } from 'lucide-react'
 import { SurveyQuestion } from './survey-questions'
+import { supabase } from '@/lib/supabase'
 
 interface SurveyCompletionProps {
   questions: SurveyQuestion[]
@@ -16,33 +17,38 @@ export default function SurveyCompletion({
   answers,
   onReset,
 }: SurveyCompletionProps) {
-  const [copied, setCopied] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(true)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const hasSubmitted = useRef(false)
+
+  useEffect(() => {
+    if (hasSubmitted.current) return
+    hasSubmitted.current = true
+
+    const submitToSupabase = async () => {
+      try {
+        const { error } = await supabase
+          .from('survey_responses')
+          .insert([
+            { responses: answers }
+          ])
+
+        if (error) throw error
+      } catch (err: any) {
+        console.error('Error submitting survey:', err)
+        setSubmitError(err.message || 'Failed to submit response to the database.')
+      } finally {
+        setIsSubmitting(false)
+      }
+    }
+
+    submitToSupabase()
+  }, [answers])
 
   // Filter out welcome step and ensure we display valid responses
   const activeQuestions = questions.filter((q) => q.type !== 'welcome')
 
-  // Prepare JSON for download
-  const handleDownloadJSON = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(answers, null, 2))
-    const downloadAnchor = document.createElement('a')
-    downloadAnchor.setAttribute('href', dataStr)
-    downloadAnchor.setAttribute('download', `survey_response_${Date.now()}.json`)
-    document.body.appendChild(downloadAnchor)
-    downloadAnchor.click()
-    downloadAnchor.remove()
-  }
 
-  // Copy responses to clipboard
-  const handleCopy = () => {
-    navigator.clipboard.writeText(JSON.stringify(answers, null, 2))
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  // Handle printing
-  const handlePrint = () => {
-    window.print()
-  }
 
   return (
     <div className="text-center py-6 space-y-8 print:p-0">
@@ -83,10 +89,14 @@ export default function SurveyCompletion({
 
         <div className="space-y-2">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-            Response Submitted Successfully!
+            {isSubmitting ? 'Saving...' : submitError ? 'Submission Failed' : 'Response Submitted Successfully!'}
           </h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
-            Thank you for participating. Your feedback has been recorded and will be used to shape our digital roadmaps.
+            {isSubmitting 
+              ? 'Please wait while we securely store your feedback...' 
+              : submitError 
+                ? `There was an issue saving to Supabase. ${submitError}` 
+                : 'Thank you for participating. Your feedback has been recorded and will be used to shape our digital roadmaps.'}
           </p>
         </div>
       </div>
@@ -102,25 +112,6 @@ export default function SurveyCompletion({
           <h3 className="font-bold text-base text-foreground flex items-center gap-2">
             <span>Summary of Answers</span>
           </h3>
-          <div className="flex items-center gap-2 print:hidden">
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-lg border border-border/60 hover:bg-secondary/60 hover:text-foreground text-muted-foreground transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
-              title="Copy JSON to clipboard"
-            >
-              {copied ? (
-                <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
-                  <span className="text-green-500">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>Copy JSON</span>
-                </>
-              )}
-            </button>
-          </div>
         </div>
 
         <div className="divide-y divide-border/30 max-h-72 overflow-y-auto pr-1 scroll-container space-y-3.5">
@@ -164,22 +155,6 @@ export default function SurveyCompletion({
         className="flex flex-wrap items-center justify-center gap-3 pt-4 print:hidden"
       >
         <button
-          onClick={handleDownloadJSON}
-          className="flex items-center gap-2 px-5 py-3 rounded-full border border-border/80 hover:border-foreground bg-card text-foreground hover:bg-secondary/30 transition-all font-semibold text-sm cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          <span>Download Response</span>
-        </button>
-
-        <button
-          onClick={handlePrint}
-          className="flex items-center gap-2 px-5 py-3 rounded-full border border-border/80 hover:border-foreground bg-card text-foreground hover:bg-secondary/30 transition-all font-semibold text-sm cursor-pointer"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Print Summary</span>
-        </button>
-
-        <button
           onClick={onReset}
           className="flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all font-semibold text-sm cursor-pointer"
         >
@@ -188,14 +163,7 @@ export default function SurveyCompletion({
         </button>
       </motion.div>
 
-      <div className="pt-2 print:hidden">
-        <button
-          onClick={onReset}
-          className="text-xs font-semibold text-[#DA9646] hover:underline cursor-pointer"
-        >
-          Retake Survey
-        </button>
-      </div>
+
     </div>
   )
 }
