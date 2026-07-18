@@ -35,11 +35,11 @@ export default function SurveyPage() {
   const totalSteps = MOCK_QUESTIONS.length
 
   // Validation function for current step
-  const validateStep = (): boolean => {
+  const validateStep = (overrideAnswer?: any): boolean => {
     if (!currentQuestion) return true
     if (currentQuestion.type === 'welcome') return true
 
-    const answer = answers[currentQuestion.id]
+    const answer = overrideAnswer !== undefined ? overrideAnswer : answers[currentQuestion.id]
 
     // Check if required
     if (currentQuestion.required) {
@@ -62,8 +62,9 @@ export default function SurveyPage() {
   }
 
   // Navigation handlers
-  const handleNext = () => {
-    if (!validateStep()) return
+  const handleNext = (overrideAnswer?: any) => {
+    const val = overrideAnswer && typeof overrideAnswer === 'object' && 'nativeEvent' in overrideAnswer ? undefined : overrideAnswer;
+    if (!validateStep(val)) return
 
     if (currentStep < totalSteps - 1) {
       setDirection(1)

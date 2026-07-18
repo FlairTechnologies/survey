@@ -9,7 +9,7 @@ interface SurveyStepRendererProps {
   question: SurveyQuestion
   answer: any
   onChange: (value: any) => void
-  onNext: () => void
+  onNext: (overrideAnswer?: any) => void
 }
 
 export default function SurveyStepRenderer({
@@ -39,7 +39,7 @@ export default function SurveyStepRenderer({
         onChange(option)
         // Add a slight delay before moving to the next step so the selection animation is visible
         setTimeout(() => {
-          onNext()
+          onNext(option)
         }, 300)
       }
     }
@@ -90,6 +90,12 @@ export default function SurveyStepRenderer({
   // Common wrapper for standard question pages
   return (
     <div ref={containerRef} className="space-y-6">
+      {question.section && (
+        <div className="mb-2">
+          <span className="text-[#DA9646] font-bold text-xs tracking-widest uppercase">{question.section}</span>
+          {question.sectionDescription && <p className="text-muted-foreground text-sm mt-1">{question.sectionDescription}</p>}
+        </div>
+      )}
       <div className="space-y-2">
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
           {question.title}
@@ -111,7 +117,7 @@ export default function SurveyStepRenderer({
                   key={option}
                   onClick={() => {
                     onChange(option)
-                    setTimeout(() => onNext(), 300)
+                    setTimeout(() => onNext(option), 300)
                   }}
                   whileHover={{ scale: 1.01, y: -1 }}
                   whileTap={{ scale: 0.99 }}
@@ -306,6 +312,19 @@ export default function SurveyStepRenderer({
               <span>Min 10 characters</span>
               <span>{(answer || '').length} / 500 characters</span>
             </div>
+          </div>
+        )}
+
+        {/* 7. Text Question */}
+        {question.type === 'text' && (
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={answer || ''}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={question.placeholder || 'Your response...'}
+              className="w-full p-4 rounded-xl border border-border/60 bg-card text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-[#FFC078] focus:border-[#FFC078] transition-all duration-300 text-sm md:text-base flair-focus"
+            />
           </div>
         )}
       </div>
