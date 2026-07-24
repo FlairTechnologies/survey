@@ -1,13 +1,13 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-sans',
+  variable: '--font-inter',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
+      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
