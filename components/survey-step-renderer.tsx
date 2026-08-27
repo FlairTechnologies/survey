@@ -67,11 +67,11 @@ export default function SurveyStepRenderer({
         <div className="flex flex-wrap justify-center gap-6 mt-4 w-full max-w-md">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border/60 shadow-sm flex-1 min-w-[140px] justify-center">
             <Clock className="w-4 h-4 text-[#DA9646]" />
-            <span className="text-xs font-semibold">~2 Min Read</span>
+            <span className="text-xs font-semibold">~5 Min Read</span>
           </div>
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border/60 shadow-sm flex-1 min-w-[140px] justify-center">
             <ClipboardList className="w-4 h-4 text-[#DA9646]" />
-            <span className="text-xs font-semibold">5 Questions</span>
+            <span className="text-xs font-semibold">19 Questions</span>
           </div>
         </div>
 
