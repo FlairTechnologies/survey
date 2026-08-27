@@ -51,52 +51,41 @@ export default function SurveyCompletion({
 
 
   return (
-    <div className="text-center py-6 space-y-8 print:p-0">
-      {/* 1. Self-drawing SVG checkmark and scale animation */}
-      <div className="flex flex-col items-center justify-center gap-4">
+    <div className="space-y-7 print:p-0">
+      {/* 1. Header */}
+      <div className="flex flex-col gap-5">
         <motion.div
           initial={{ scale: 0, rotate: -45 }}
           animate={{ scale: 1, rotate: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 200,
-            damping: 15,
-            delay: 0.1,
-          }}
-          className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFC078] to-[#DA9646] flex items-center justify-center shadow-lg shadow-orange-500/20"
+          transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+          className={`flex h-16 w-16 items-center justify-center rounded-2xl shadow-float ${submitError ? 'bg-destructive' : 'flair-gradient'}`}
         >
-          <svg
-            className="w-10 h-10 text-black"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="3.5"
-          >
-            <motion.path
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{
-                delay: 0.4,
-                duration: 0.5,
-                ease: 'easeInOut',
-              }}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+          {isSubmitting ? (
+            <span className="h-6 w-6 animate-spin rounded-full border-2 border-black/25 border-t-black" />
+          ) : (
+            <svg className={`h-9 w-9 ${submitError ? 'text-white' : 'text-black'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.4, duration: 0.5, ease: 'easeInOut' }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          )}
         </motion.div>
 
         <div className="space-y-2">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-            {isSubmitting ? 'Saving...' : submitError ? 'Submission Failed' : 'Response Submitted Successfully!'}
+          <h2 className="text-3xl md:text-[2.4rem] font-extrabold leading-tight tracking-tight text-foreground">
+            {isSubmitting ? 'Saving your responses…' : submitError ? 'We couldn’t save that' : 'All done — thank you!'}
           </h2>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
-            {isSubmitting 
-              ? 'Please wait while we securely store your feedback...' 
-              : submitError 
-                ? `There was an issue saving to Supabase. ${submitError}` 
-                : 'Thank you for participating. Your feedback has been recorded and will be used to shape our digital roadmaps.'}
+          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+            {isSubmitting
+              ? 'Hang tight while we securely store your feedback.'
+              : submitError
+                ? `Something went wrong saving your response. ${submitError}`
+                : 'Your feedback has been recorded and will directly shape what we build next.'}
           </p>
         </div>
       </div>
@@ -106,15 +95,15 @@ export default function SurveyCompletion({
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.4 }}
-        className="text-left bg-card/60 backdrop-blur-md rounded-2xl border border-border/60 p-5 space-y-4 max-w-xl mx-auto shadow-sm print:border-none print:shadow-none print:bg-transparent"
+        className="space-y-4 rounded-2xl border border-border/60 bg-secondary/40 p-5 text-left print:border-none print:bg-transparent print:shadow-none"
       >
-        <div className="flex items-center justify-between border-b border-border/40 pb-3">
-          <h3 className="font-bold text-base text-foreground flex items-center gap-2">
-            <span>Summary of Answers</span>
+        <div className="flex items-center justify-between border-b border-border/50 pb-3">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            Your answers
           </h3>
         </div>
 
-        <div className="divide-y divide-border/30 max-h-72 overflow-y-auto pr-1 scroll-container space-y-3.5">
+        <div className="scroll-container thin-scroll max-h-72 space-y-3.5 divide-y divide-border/40 overflow-y-auto pr-1.5">
           {activeQuestions.map((q) => {
             const val = answers[q.id]
             let displayVal = 'No response'
@@ -135,10 +124,10 @@ export default function SurveyCompletion({
 
             return (
               <div key={q.id} className="pt-3.5 first:pt-0">
-                <h4 className="text-xs font-bold text-muted-foreground tracking-wide uppercase mb-1">
+                <h4 className="text-[11px] font-semibold text-muted-foreground/80 mb-1 leading-snug">
                   {q.title}
                 </h4>
-                <p className="text-sm font-medium text-foreground leading-relaxed break-words">
+                <p className="text-sm font-semibold text-foreground leading-relaxed break-words">
                   {displayVal}
                 </p>
               </div>
@@ -152,18 +141,16 @@ export default function SurveyCompletion({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="flex flex-wrap items-center justify-center gap-3 pt-4 print:hidden"
+        className="flex flex-wrap items-center gap-3 pt-1 print:hidden"
       >
         <button
           onClick={onReset}
-          className="flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all font-semibold text-sm cursor-pointer"
+          className="flex items-center gap-1.5 rounded-full bg-foreground px-5 py-2.5 text-[13px] font-semibold text-background transition-opacity hover:opacity-90 cursor-pointer flair-focus"
         >
-          <Home className="w-4 h-4" />
-          <span>Restart Survey</span>
+          <Home className="h-3.5 w-3.5" />
+          <span>Start over</span>
         </button>
       </motion.div>
-
-
     </div>
   )
 }

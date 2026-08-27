@@ -14,6 +14,44 @@ export interface SurveyQuestion {
   sectionDescription?: string
 }
 
+export interface SurveySection {
+  label: string          // e.g. "About You"
+  eyebrow: string        // e.g. "Section 1"
+  description?: string
+  firstStep: number      // index of the section's first question in MOCK_QUESTIONS
+  questionIds: string[]
+}
+
+/** Derives the survey's sections from question `section` markers. */
+export function getSections(questions: SurveyQuestion[] = MOCK_QUESTIONS): SurveySection[] {
+  const sections: SurveySection[] = []
+  questions.forEach((q, i) => {
+    if (q.section) {
+      // "SECTION 1: About You" -> label "About You"
+      const label = q.section.includes(':') ? q.section.split(':').slice(1).join(':').trim() : q.section.trim()
+      sections.push({
+        label: label || q.section,
+        eyebrow: `Section ${sections.length + 1}`,
+        description: q.sectionDescription,
+        firstStep: i,
+        questionIds: [q.id],
+      })
+    } else if (q.type !== 'welcome' && sections.length) {
+      sections[sections.length - 1].questionIds.push(q.id)
+    }
+  })
+  return sections
+}
+
+/** Index of the section that a given step belongs to, or -1 (e.g. the welcome step). */
+export function getActiveSectionIndex(sections: SurveySection[], step: number): number {
+  let active = -1
+  sections.forEach((s, i) => {
+    if (s.firstStep <= step) active = i
+  })
+  return active
+}
+
 export const MOCK_QUESTIONS: SurveyQuestion[] = [
   {
     id: 'welcome',

@@ -3,94 +3,97 @@
 @custom-variant dark (&:is(.dark *));
 
 /* =========================================
-   FLAIR TECHNOLOGIES COLOR SYSTEM
-   Light: cream canvas, dark: navy depth
-   Accent: #FFC078 (Flair amber/logo color)
+   FLAIR TECHNOLOGIES — DESIGN SYSTEM
+   Modern & clean. Light: soft paper. Dark: ink navy.
+   Brand accent: amber #FFC078 → #DA9646
    ========================================= */
 
 :root {
-  /* Backgrounds */
-  --background: oklch(0.98 0.012 80);        /* #FDF9EC warm cream */
-  --foreground: oklch(0.12 0.005 120);       /* #1B1C1B near-black */
+  /* Surfaces */
+  --background: oklch(0.988 0.003 85);       /* soft near-white paper */
+  --foreground: oklch(0.20 0.012 265);       /* ink, slight cool */
 
-  /* Cards & surfaces */
-  --card: oklch(1 0 0);                      /* #FFFFFF pure white */
-  --card-foreground: oklch(0.12 0.005 120);
+  --card: oklch(1 0 0);                       /* pure white */
+  --card-foreground: oklch(0.20 0.012 265);
 
-  /* Popover */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0.005 120);
+  --popover-foreground: oklch(0.20 0.012 265);
 
-  /* PRIMARY — Flair amber #FFC078 */
-  --primary: oklch(0.79 0.13 60);
-  --primary-foreground: oklch(0.12 0.005 120); /* dark text on amber */
+  /* Brand amber */
+  --primary: oklch(0.79 0.13 62);
+  --primary-foreground: oklch(0.20 0.012 265);
 
-  /* Secondary */
-  --secondary: oklch(0.93 0 0);              /* #EDEDED */
-  --secondary-foreground: oklch(0.12 0.005 120);
+  --secondary: oklch(0.965 0.004 85);         /* faint warm gray */
+  --secondary-foreground: oklch(0.28 0.01 265);
 
-  /* Muted */
-  --muted: oklch(0.93 0 0);                  /* #EDEDED */
-  --muted-foreground: oklch(0.54 0.01 60);   /* #86847E warm gray */
+  --muted: oklch(0.965 0.004 85);
+  --muted-foreground: oklch(0.53 0.012 265);  /* readable gray */
 
-  /* Accent — deeper amber #DA9646 */
-  --accent: oklch(0.72 0.12 60);             /* #DA9646 */
-  --accent-foreground: oklch(0.12 0.005 120);
+  --accent: oklch(0.72 0.12 60);              /* deeper amber */
+  --accent-foreground: oklch(0.20 0.012 265);
 
-  /* Destructive */
-  --destructive: oklch(0.55 0.22 25);
+  --destructive: oklch(0.58 0.20 27);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Borders & inputs */
-  --border: oklch(0.91 0.005 80);            /* slightly warm border */
-  --input: oklch(0.91 0.005 80);
-  --ring: oklch(0.79 0.13 60);               /* primary amber ring */
+  --success: oklch(0.62 0.15 150);
 
-  --radius: 0.5rem;
+  --border: oklch(0.925 0.004 90);
+  --input: oklch(0.925 0.004 90);
+  --ring: oklch(0.79 0.13 62);
+
+  /* Brand literals for gradients */
+  --brand-1: #ffc078;
+  --brand-2: #da9646;
+
+  /* Elevation */
+  --shadow-color: 240 10% 20%;
+  --shadow-sm: 0 1px 2px 0 hsl(var(--shadow-color) / 0.05);
+  --shadow-md: 0 4px 12px -2px hsl(var(--shadow-color) / 0.08), 0 2px 6px -2px hsl(var(--shadow-color) / 0.06);
+  --shadow-lg: 0 18px 40px -12px hsl(var(--shadow-color) / 0.16), 0 6px 16px -8px hsl(var(--shadow-color) / 0.10);
+
+  --radius: 0.875rem;
 }
 
 .dark {
-  /* Backgrounds — deep navy system */
-  --background: oklch(0.13 0.04 245);        /* #0E1628 darkest navy */
-  --foreground: oklch(1 0 0);               /* #FFFFFF */
+  --background: oklch(0.165 0.028 258);       /* deep ink navy */
+  --foreground: oklch(0.97 0.005 265);
 
-  /* Cards */
-  --card: oklch(0.21 0.04 240);             /* #1F2937 slate */
-  --card-foreground: oklch(1 0 0);
+  --card: oklch(0.215 0.03 256);              /* raised slate */
+  --card-foreground: oklch(0.97 0.005 265);
 
-  /* Popover */
-  --popover: oklch(0.21 0.04 240);
-  --popover-foreground: oklch(1 0 0);
+  --popover: oklch(0.215 0.03 256);
+  --popover-foreground: oklch(0.97 0.005 265);
 
-  /* PRIMARY — Flair amber #FFC078 (unchanged) */
-  --primary: oklch(0.79 0.13 60);
-  --primary-foreground: oklch(0.12 0.005 120);
+  --primary: oklch(0.79 0.13 62);
+  --primary-foreground: oklch(0.18 0.02 260);
 
-  /* Secondary */
-  --secondary: oklch(0.16 0.02 240);        /* #1E1E1E */
-  --secondary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.255 0.028 256);
+  --secondary-foreground: oklch(0.97 0.005 265);
 
-  /* Muted */
-  --muted: oklch(0.16 0.02 240);
-  --muted-foreground: oklch(0.54 0.01 60);  /* #86847E */
+  --muted: oklch(0.255 0.028 256);
+  --muted-foreground: oklch(0.66 0.02 260);
 
-  /* Accent */
-  --accent: oklch(0.79 0.13 60);
-  --accent-foreground: oklch(0.12 0.005 120);
+  --accent: oklch(0.79 0.13 62);
+  --accent-foreground: oklch(0.18 0.02 260);
 
-  /* Destructive */
-  --destructive: oklch(0.55 0.22 25);
+  --destructive: oklch(0.62 0.20 27);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Borders & inputs */
-  --border: oklch(0.22 0.04 240);
-  --input: oklch(0.22 0.04 240);
-  --ring: oklch(0.79 0.13 60);
+  --success: oklch(0.68 0.15 150);
+
+  --border: oklch(0.30 0.025 256);
+  --input: oklch(0.30 0.025 256);
+  --ring: oklch(0.79 0.13 62);
+
+  --shadow-color: 240 30% 4%;
+  --shadow-sm: 0 1px 2px 0 hsl(var(--shadow-color) / 0.3);
+  --shadow-md: 0 6px 16px -4px hsl(var(--shadow-color) / 0.45);
+  --shadow-lg: 0 24px 50px -16px hsl(var(--shadow-color) / 0.6);
 }
 
 @theme inline {
-  --font-sans: 'Poppins', 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -108,19 +111,23 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --color-brand-1: var(--brand-1);
+  --color-brand-2: var(--brand-2);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   html {
     scroll-behavior: smooth;
@@ -129,11 +136,19 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
     overflow-x: hidden;
+    letter-spacing: -0.011em;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.022em;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--brand-1) 45%, transparent);
+    color: var(--foreground);
   }
 }
 
@@ -144,63 +159,91 @@
     overflow-anchor: auto;
   }
 
-  /* Flair brand gradient */
+  /* Brand gradient helpers */
   .flair-gradient {
-    background: linear-gradient(135deg, #FFC078 0%, #DA9646 100%);
+    background: linear-gradient(120deg, var(--brand-1) 0%, var(--brand-2) 100%);
+  }
+  .flair-text {
+    background: linear-gradient(100deg, var(--brand-2), var(--brand-1), var(--brand-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  /* Subtle card shadow in light, glow in dark */
+  .shadow-soft { box-shadow: var(--shadow-md); }
+  .shadow-float { box-shadow: var(--shadow-lg); }
+
+  /* Elevated survey card: crisp hairline + soft float */
   .card-elevated {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
-  }
-  .dark .card-elevated {
-    box-shadow: 0 0 0 1px rgb(255 192 120 / 0.08);
+    box-shadow: var(--shadow-lg);
   }
 
-  /* Focus ring using brand color */
   .flair-focus {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFC078]/60;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
-  
-  /* Animated gradient flow for text headers */
+
   .animate-gradient-flow {
-    background-size: 200% auto;
-    animation: flow 5s linear infinite;
+    background-size: 220% auto;
+    animation: flow 6s ease-in-out infinite;
   }
+
+  /* Thin, unobtrusive scrollbar */
+  .thin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+  .thin-scroll::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+  .thin-scroll::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* Range slider — consistent brand thumb across browsers */
+input[type='range'].flair-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  outline: none;
+}
+input[type='range'].flair-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #fff;
+  border: 3px solid var(--brand-2);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+input[type='range'].flair-range::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+input[type='range'].flair-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  border: 3px solid var(--brand-2);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
 }
 
 @keyframes flow {
-  0% {
-    background-position: 0% center;
-  }
-  50% {
-    background-position: 100% center;
-  }
-  100% {
-    background-position: 0% center;
-  }
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
-/* Printing styles */
+/* Print */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
-    overflow: visible !important;
-  }
-  .print\:hidden {
-    display: none !important;
-  }
-  .print\:border-none {
-    border: none !important;
-  }
-  .print\:shadow-none {
-    box-shadow: none !important;
-  }
-  .print\:bg-transparent {
-    background: transparent !important;
-  }
-  .print\:p-0 {
-    padding: 0 !important;
-  }
+  body { background: white !important; color: black !important; overflow: visible !important; }
+  .print\:hidden { display: none !important; }
+  .print\:border-none { border: none !important; }
+  .print\:shadow-none { box-shadow: none !important; }
+  .print\:bg-transparent { background: transparent !important; }
+  .print\:p-0 { padding: 0 !important; }
 }
