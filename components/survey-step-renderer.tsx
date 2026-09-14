@@ -1,9 +1,11 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Check, Sparkles } from 'lucide-react'
 import { SurveyQuestion } from './survey-questions'
+
+const OTHER_OPTION = 'Others'
 
 interface SurveyStepRendererProps {
   question: SurveyQuestion
@@ -23,6 +25,30 @@ export default function SurveyStepRenderer({
   totalQuestions,
 }: SurveyStepRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const otherInputRef = useRef<HTMLInputElement>(null)
+  const [isOtherActive, setIsOtherActive] = useState(false)
+
+  // Reset/restore the "Others" text field whenever the question changes
+  useEffect(() => {
+    if (
+      question.type === 'single-choice' &&
+      question.options?.includes(OTHER_OPTION) &&
+      typeof answer === 'string' &&
+      answer.length > 0 &&
+      !question.options.includes(answer)
+    ) {
+      setIsOtherActive(true)
+    } else {
+      setIsOtherActive(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question.id])
+
+  useEffect(() => {
+    if (isOtherActive) {
+      otherInputRef.current?.focus()
+    }
+  }, [isOtherActive])
 
   useEffect(() => {
     if (question.type === 'textarea' || question.type === 'text') {
@@ -40,6 +66,11 @@ export default function SurveyStepRenderer({
       const keyNum = parseInt(e.key)
       if (keyNum >= 1 && keyNum <= question.options!.length) {
         const option = question.options![keyNum - 1]
+        if (option === OTHER_OPTION) {
+          setIsOtherActive(true)
+          onChange('')
+          return
+        }
         onChange(option)
         setTimeout(() => onNext(option), 280)
       }
@@ -110,11 +141,18 @@ export default function SurveyStepRenderer({
         {question.type === 'single-choice' && question.options && (
           <div className="grid grid-cols-1 gap-2.5">
             {question.options.map((option, index) => {
-              const isSelected = answer === option
+              const isOtherOption = option === OTHER_OPTION
+              const isSelected = isOtherOption ? isOtherActive : answer === option
               return (
                 <motion.button
                   key={option}
                   onClick={() => {
+                    if (isOtherOption) {
+                      setIsOtherActive(true)
+                      onChange('')
+                      return
+                    }
+                    setIsOtherActive(false)
                     onChange(option)
                     setTimeout(() => onNext(option), 280)
                   }}
@@ -145,6 +183,29 @@ export default function SurveyStepRenderer({
                 </motion.button>
               )
             })}
+
+            <AnimatePresence>
+              {isOtherActive && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-1">
+                    <input
+                      ref={otherInputRef}
+                      type="text"
+                      value={typeof answer === 'string' ? answer : ''}
+                      onChange={(e) => onChange(e.target.value)}
+                      placeholder="Please specify..."
+                      className="w-full p-4 rounded-xl border border-primary bg-card text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 text-sm flair-focus"
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <p className="mt-1 text-right text-[11px] text-muted-foreground/70">
               Tip: press <kbd className="font-mono font-semibold text-muted-foreground">1</kbd>–<kbd className="font-mono font-semibold text-muted-foreground">{question.options.length}</kbd> to choose
             </p>
